@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useParams, useNavigate } from "react-router-dom";
 
-import Logo from "../assets/google-pagination-logo.png";
 import { pagination } from "../utils/Constants";
+import { Context } from "../utils/ContextApi";
 
 const Pagination = ({ queries }) => {
     const { query } = useParams();
     const [page, setPage] = useState(pagination[0].startIndex);
     const navigate = useNavigate();
+    const { isDarkMode } = useContext(Context);
 
     useEffect(() => {
         setPage(pagination[0].startIndex);
@@ -21,46 +22,57 @@ const Pagination = ({ queries }) => {
 
     return (
         <div className="flex flex-col items-center py-14 max-w-[700px]">
-            <div className="relative text-[#4285f4]">
+            {/* Navigation Controls */}
+            <div className="flex items-center gap-4 mb-6">
                 {queries.previousPage && (
-                    <div
-                        className="absolute left-[-30px] md:left-[-40px] top-[10px]"
+                    <button
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full smooth-transition ${
+                            isDarkMode 
+                                ? 'btn-modern' 
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        }`}
                         onClick={() =>
                             paginationClickHandler(
                                 queries.previousPage[0].startIndex
                             )
                         }
                     >
-                        <FiChevronLeft size={20} className="cursor-pointer" />
-                        <span className="cursor-pointer absolute left-[-5px] top-[30px] hidden md:block">
-                            Prev
-                        </span>
-                    </div>
+                        <FiChevronLeft size={18} />
+                        <span className="hidden md:block text-sm">Previous</span>
+                    </button>
                 )}
-                <img className="w-[250px] md:w-[300px]" src={Logo} />
+                
                 {queries.nextPage && (
-                    <div
-                        className="absolute right-[-30px] md:right-[-40px] top-[10px]"
+                    <button
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full smooth-transition ${
+                            isDarkMode 
+                                ? 'btn-modern' 
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        }`}
                         onClick={() =>
                             paginationClickHandler(
                                 queries.nextPage[0].startIndex
                             )
                         }
                     >
-                        <FiChevronRight size={20} className="cursor-pointer" />
-                        <span className="cursor-pointer absolute left-[-5px] top-[30px] hidden md:block">
-                            Next
-                        </span>
-                    </div>
+                        <span className="hidden md:block text-sm">Next</span>
+                        <FiChevronRight size={18} />
+                    </button>
                 )}
             </div>
-            <div className="flex gap-3 text-[#4285f4] text-sm">
+            
+            {/* Page Numbers */}
+            <div className="flex gap-2">
                 {pagination.map((p) => (
                     <span
                         key={p.page}
                         onClick={() => paginationClickHandler(p.startIndex)}
-                        className={`cursor-pointer ${
-                            page === p.startIndex ? "text-black" : ""
+                        className={`w-10 h-10 flex items-center justify-center rounded-full cursor-pointer smooth-transition ${
+                            page === p.startIndex 
+                                ? "bg-google-blue text-white" 
+                                : isDarkMode 
+                                    ? "glass text-gray-400 hover:text-white hover:bg-white/10"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                     >
                         {p.page}

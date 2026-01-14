@@ -69,7 +69,7 @@ const Home = () => {
                     
                     {/* Tagline */}
                     <p className={`mt-8 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {isDarkMode ? 'Search the web with style ✨' : 'Search the web'}
+                        {isDarkMode ? 'Search the web with style' : 'Search the web'}
                     </p>
                 </div>
             </main>
